@@ -23,24 +23,10 @@ from GPy.core import Mapping
 
 import ipdb
 
-# create logger for the application
-logger = logging.getLogger('DGPM Logger')
-
-ch = logging.StreamHandler()
-
-# create formatter and add it to the handlers
-formatter = logging.Formatter(
-    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-ch.setFormatter(formatter)
-
-
-logger.addHandler(ch)
-logger.setLevel(logging.DEBUG)
-
 """Função para leitura dos dados"""
 
 def read_data():
-    os.chdir('/content/drive/MyDrive/DGP_YCF_py/data')
+    os.chdir('../data')
     fp = 'Src_2_2006_to_Present_Treasury_Data.csv'
     df = pd.read_csv(fp)
     ref_date = date(2012, 12, 31)
@@ -51,7 +37,7 @@ read_data()
 
 global error_df, perf_df, X, pred_mat, act_mat, rmse_df
 df = read_data()
-date_init = '2017-02-05'
+date_init = '2006-02-08'
 df = df.loc[df["Date"] > date_init]
 df = df.reset_index(drop=True)
 dates = df["Date"]
@@ -69,7 +55,7 @@ act_mat = np.ones((pred_rows, 11), dtype=np.float64)
 rmse_mat = np.ones((1, 11), dtype=np.float64)
 date_list = list()
 
-logger.info("Dataset has " + str(N) + " rows")
+print("Dataset has " + str(N) + " rows")
 row_index = 0
 mf = Mapping(1, 1)
 date_list = list()
@@ -82,7 +68,7 @@ while row_index < (N-2):  # (N-2) is because we don't need to process last recor
     
     # log progress - update progress every 100 days
     if row_index % 100 == 0:
-        logger.debug("Day %d processed..." % row_index)
+        print("Day %d processed..." % row_index)
     
     if row_index == 0:
         k = RBF(input_dim=1)
@@ -151,7 +137,7 @@ rmse_df = pd.DataFrame(rmse_mat)
 req_cols = filter(lambda v: v not in ["Date", "key"], df.columns)
 rmse_df.columns = req_cols
 
-os.chdir('/content/drive/MyDrive/DGP_YCF_py/output')
+os.chdir('../output')
 fp = "GP_Results.csv"
 perf_df.to_csv(fp, index=False, header=True)
 fp = "rmse_results_DGP" + ".csv"
@@ -190,7 +176,11 @@ with open("day_2000_sample.csv", 'a') as d2000sample:
     line_to_write.append("GP")
     writer.writerow(line_to_write)
 
-logger.info("Done!")
+
+
+
+
+
 
 
 
