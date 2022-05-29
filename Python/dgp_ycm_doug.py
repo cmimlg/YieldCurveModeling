@@ -14,7 +14,6 @@ import sys
 import time
 import os
 import matplotlib.pyplot as plt
-import logging
 import csv
 from memory_profiler import memory_usage
 
@@ -26,7 +25,7 @@ import ipdb
 """Função para leitura dos dados"""
 
 def read_data():
-    os.chdir('../data')
+    os.chdir('/workspace/YieldCurveModeling/data')
     fp = 'Src_2_2006_to_Present_Treasury_Data.csv'
     df = pd.read_csv(fp)
     ref_date = date(2012, 12, 31)
@@ -137,7 +136,7 @@ rmse_df = pd.DataFrame(rmse_mat)
 req_cols = filter(lambda v: v not in ["Date", "key"], df.columns)
 rmse_df.columns = req_cols
 
-os.chdir('../output')
+os.chdir('/workspace/YieldCurveModeling/output')
 fp = "GP_Results.csv"
 perf_df.to_csv(fp, index=False, header=True)
 fp = "rmse_results_DGP" + ".csv"
